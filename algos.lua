@@ -1,3 +1,5 @@
+require "math"
+
 algorithm = {}
 
 function algorithm.clamp(num, min, max)
@@ -10,7 +12,11 @@ algorithm["linear"] = function()
 	step = (config["maxspeed"] - config["minspeed"]) / (config["maxtemp"] - config["mintemp"])
 	temp = sensor.read("die sensor") / 1000
 	speed = config["minspeed"] + ((temp-config["mintemp"])*step)
-	speed = algorithm.clamp(speed, config["minspeed"], config["maxspeed"])
 	sensor.fanSpeed(speed)
 	return speed
+end
+
+algorithm["mbpfand"] = function()
+	temp = sensor.read("die sensor") / 1000
+	return math.log(temp/40) / 0.3 * config["maxspeed"]	
 end

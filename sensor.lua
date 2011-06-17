@@ -1,5 +1,6 @@
 require "io"
 require "math"
+require "algos"
 require "config"
 require "sensorinfo"
 
@@ -7,9 +8,8 @@ sensor = sensorinfo [config["model"][1]] [config["model"][2]]
 
 function sensor.fanSpeed( speed )
 	if not speed then return sensor.read("fan sensor") end
-	if speed < config["minspeed"] then speed = config["minspeed"] end
-	if speed > config["maxspeed"] then speed = config["maxspeed"] end
-	
+	speed = algorithm.clamp(speed, config["minspeed"], config["maxspeed"])
+	print("Fan speed: " .. speed)
 	fanfile = io.open(sensor["base"] .. sensor["out"], "w")
 	if not fanfile then return nil end
 	fanfile:write(speed)
