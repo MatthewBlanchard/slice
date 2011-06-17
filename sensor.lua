@@ -20,7 +20,7 @@ function sensor.read( name )
 	sensorfile = io.open(sensor["base"] .. sensor[name])
 	if not sensorfile then return nil end
 
-	temp = tonumber(sensorfile:read("*l"))
+	result = tonumber(sensorfile:read("*l"))
 	sensorfile:close()
-	return temp/1000
+	return result
 end
